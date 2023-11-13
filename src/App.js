@@ -12,7 +12,6 @@ function App() {
         <Route path="/weather" element={<WeatherApp />} />
         <Route path="/" element={<Homepage />} />
       </Routes>
-      
     </>
   );
 }
