@@ -3,7 +3,7 @@
     height: 25vh;
     background-color: #4d4d4d;
     position: fixed;
-    top:0;
+    top:  0;
     width: 100%;
     transform: translateY(-82%);
     transition: transform 0.5s ease-out;
