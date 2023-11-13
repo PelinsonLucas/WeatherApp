@@ -7,8 +7,8 @@ import { Routes, Route } from 'react-router-dom';
 function App() {
   return (
     <>
+      <Header/>
       <Routes>
-        <Header/>
         <Route path="/weather" element={<WeatherApp />} />
         <Route path="/" element={<Homepage />} />
       </Routes>
