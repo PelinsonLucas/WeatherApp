@@ -43,7 +43,6 @@ export const Homepage = () => {
   return (
     <div className='homepage-background'>
         <div className='homepage-container'>
-         <Header/>
          <Home/>
          <Portfolio/>
         </div>
