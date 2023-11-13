@@ -7,7 +7,7 @@
     width: 100%;
     transform: translateY(-82%);
     transition: transform 0.5s ease-out;
-    z-index: 1; /* Make sure the header is behind the menu button */
+    z-index: 5; /* Make sure the header is behind the menu button */
   }
   
   .header.visible {
@@ -53,7 +53,7 @@
     justify-content: space-around;
     height: 46px;
     outline: none;
-    z-index: 1;  
+    z-index: 5;  
     
 }
   

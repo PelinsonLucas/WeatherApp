@@ -22,7 +22,7 @@ export const WeatherApp = () => {
     if (searchCity[0].value==="") {
       return 0;
     }
-    let urlGeocodingApi = `http://api.openweathermap.org/geo/1.0/direct?q=${searchCity[0].value}&appid=${apiKey}`
+    let urlGeocodingApi = `https://api.openweathermap.org/geo/1.0/direct?q=${searchCity[0].value}&appid=${apiKey}`
     
     fetch(urlGeocodingApi)
     .then( (response) => response.json() )

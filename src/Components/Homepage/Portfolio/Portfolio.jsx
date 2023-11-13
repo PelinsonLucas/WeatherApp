@@ -9,13 +9,11 @@ const Portfolio = () => {
     <div id="portfolio" className="portfolio-section">
       <h2 className="section-title animated">My Projects</h2>
       <div className="projects animated">
-        <a className="project">
-          <Link to = "/weather">
+        <Link className="project"to = "/weather">
           <h3 className="project-title">Project 1</h3>
           <p className="project-description">This is a brief description of Project 1.</p>
           <img src={screenshot1} alt="Project 1 Screenshot" className="project-screenshot" />
-          </Link>
-        </a>
+        </Link>
         {/* Add more projects as needed */}
       </div>
     </div>
