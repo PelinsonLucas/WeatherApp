@@ -10,7 +10,6 @@ import IconRain from '../Assets/rain.png'
 import IconSearch from '../Assets/search.png'
 import IconSnow from '../Assets/snow.png'
 import IconWind from '../Assets/wind.png'
-import BackgroundImage from '../Assets/background.jpg'
 
 export const WeatherApp = () => {
 
