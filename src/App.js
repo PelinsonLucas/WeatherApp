@@ -2,7 +2,7 @@ import './App.css';
 import Homepage from './Components/Homepage/Homepage';
 import WeatherApp from './Components/WeatherApp/WeatherApp';
 import Header from './Header/Header.jsx';
-import { Route } from 'react-router-dom';
+import { Route, Switch} from 'react-router';
 
 function App() {
   return (
