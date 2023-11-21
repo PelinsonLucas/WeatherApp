@@ -3,12 +3,20 @@ pointer-events: none;
 top: 0;
 position: absolute;
 left: 0;
-width: 95vw;
-height: 95vh;
+width: 90vw;
+height: 90vh;
 z-index: 2;
+display: none;
 }
 
-.rain.back-row {
+.rain.display{
+    display: flex;
+}
+.rain.hide{
+    display: none;
+}
+
+.back-row {
 z-index: 1;
 bottom: 60px;
 opacity: 0.5;

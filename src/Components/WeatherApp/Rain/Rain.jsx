@@ -5,25 +5,37 @@ export const Rain = () => {
 
   return (
     <>
-      <div className="rain front-row"></div>
-      <div className="rain back-row" onLoad={makeItRain()}></div>
+      <div className="rain" onLoad={makeItRain()}>
+        <div className="front-row"></div>
+        <div className="back-row"></div>
+      </div>
     </>
   )
 }
 
 const makeItRain = () => {
     
-  var rainFrontRow = document.querySelector('.rain.front-row');
-  var rainBackRow = document.querySelector('.rain.back-row');
+  var rain = document.querySelector('.rain');
+  if(rain === null){
+    rain = document.createElement('div');
+    rain.classList.add('rain');
+  }
 
-  if (rainFrontRow === null){
+  var rainFrontRow = rain.querySelector('.front-row');
+  var rainBackRow = rain.querySelector('.back-row');
+
+  if(rainFrontRow === null){
     rainFrontRow = document.createElement('div');
-    rainFrontRow.classList.add('rain', 'front-row');}
-  if (rainBackRow === null){
+    rainFrontRow.classList.add('front-row');
+    rain.appendChild(rainFrontRow);
+  } 
+  if(rainBackRow === null){
     rainBackRow = document.createElement('div');
-    rainBackRow.classList.add('rain', 'back-row');}
-  
-  rainFrontRow.innerHTML = '';  
+    rainBackRow.classList.add('back-row');
+    rain.appendChild(rainBackRow);
+  }
+
+  rainFrontRow.innerHTML = '';
   rainBackRow.innerHTML = '';
 
   var increment = 0;

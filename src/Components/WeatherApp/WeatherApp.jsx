@@ -10,6 +10,7 @@ import IconRain from '../Assets/rain.png'
 import IconSearch from '../Assets/search.png'
 import IconSnow from '../Assets/snow.png'
 import IconWind from '../Assets/wind.png'
+import IconMist from '../Assets/mist.png'
 
 export const WeatherApp = () => {
 
@@ -17,73 +18,75 @@ export const WeatherApp = () => {
 
   const [weatherIcon, setWeatherIcon] = useState(IconCloud)
 
+  const setClear = (background, rain) => {
+    background.classList.remove('rainy');
+    background.classList.add('clear');
+    rain.classList.remove('display');
+    rain.classList.add('hide');
+  }
+
+  const setRain = (background, rain) => {
+    background.classList.remove('clear');
+    background.classList.add('rainy');
+    rain.classList.remove('hide');
+    rain.classList.add('display');
+  }
+
   const search = () => {
     const searchCity = document.getElementsByClassName("cityInput")
     if (searchCity[0].value==="") {
       return 0;
     }
-    let urlGeocodingApi = `https://api.openweathermap.org/geo/1.0/direct?q=${searchCity[0].value}&appid=${apiKey}`
-    
-    fetch(urlGeocodingApi)
-    .then( (response) => response.json() )
-    .then( (data) => {
-      let {lat, lon} = data[0]
 
-      let urlWeatherApi = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
-      let responsePromise2 = fetch(urlWeatherApi)
+      let urlWeatherApi = `https://api.openweathermap.org/data/2.5/weather?q=${searchCity[0].value}&appid=${apiKey}&units=metric`
+      let responsePromise = fetch(urlWeatherApi)
 
-      responsePromise2.then((response) => response.json() )
+      responsePromise.then((response) => response.json() )
       .then( (data) => {
 
-        const humidity = document.getElementsByClassName('humidity-percentage')
-        const wind = document.getElementsByClassName('wind-rate')
-        const temperature = document.getElementsByClassName('weather-temp')
-        const location = document.getElementsByClassName('weather-location')
-        const [rainFront, rainBack] = document.querySelectorAll('.rain')
+      const humidity = document.getElementsByClassName('humidity-percentage')
+      const wind = document.getElementsByClassName('wind-rate')
+      const temperature = document.getElementsByClassName('weather-temp')
+      const location = document.getElementsByClassName('weather-location')
+      const rain = document.querySelector('.rain')
+      const background = document.querySelector('.background')
 
-        humidity[0].innerHTML = data.main.humidity + ' %';
-        wind[0].innerHTML = data.wind.speed + ' km/h';
-        temperature[0].innerHTML = data.main.temp + 'ºc';
-        location[0].innerHTML = data.name;
+      humidity[0].innerHTML = data.main.humidity + ' %';
+      wind[0].innerHTML = data.wind.speed + ' km/h';
+      temperature[0].innerHTML = data.main.temp + 'ºc';
+      location[0].innerHTML = data.name;
 
-        switch (data.weather[0].main) {
-          case 'thunderstorm':
-          case 'Rain':
-            setWeatherIcon(IconRain);
-            rainFront.hidden = false;
-            rainBack.hidden = false;
-            break;
-          case 'Drizzle':
-            rainFront.hidden = true;
-            rainBack.hidden = true;
-            setWeatherIcon(IconDrizzle);
-            break;
-          case 'Snow':
-            rainFront.hidden = true;
-            rainBack.hidden = true;
-            setWeatherIcon(IconSnow);
-            break;
-          case 'Clouds':
-            rainFront.hidden = true;
-            rainBack.hidden = true;
-            setWeatherIcon(IconCloud);
-            break;
-          case 'Clear':
-            rainFront.hidden = true;
-            rainBack.hidden = true;
-            setWeatherIcon(IconClear);
-            break;
-          default:
-            rainFront.hidden = true;
-            rainBack.hidden = true;
-            setWeatherIcon(IconWind);
-            break;
-        }
-        
-        console.log(data)
-      }).catch( () => { 
-        return 0 
-      })
+      switch (data.weather[0].main) {
+        case 'thunderstorm':
+        case 'Rain':
+          setWeatherIcon(IconRain);
+          setRain(background, rain);
+          break;
+        case 'Drizzle':
+          setWeatherIcon(IconDrizzle);
+          setClear(background, rain);
+          break;
+        case 'Snow':
+          setWeatherIcon(IconSnow);
+          setClear(background, rain);
+          break;
+        case 'Clouds':
+          setWeatherIcon(IconCloud);
+          setClear(background, rain);
+          break;
+        case 'Clear':
+          setWeatherIcon(IconClear);
+          setClear(background, rain);
+          break;
+        case 'Mist':
+          setWeatherIcon(IconMist);
+          setClear(background, rain);
+          break;
+        default:
+          setWeatherIcon(IconWind);
+          setClear(background, rain);
+          break;
+      }
 
    }).catch( () => { 
       return 0;
