@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './WeatherApp.css'
 import Rain from './Rain/Rain.jsx'
 
@@ -32,71 +32,92 @@ export const WeatherApp = () => {
     rain.classList.add('display');
   }
 
+  const updateWeather = (data) => {
+    const humidity = document.getElementsByClassName('humidity-percentage')
+    const wind = document.getElementsByClassName('wind-rate')
+    const temperature = document.getElementsByClassName('weather-temp')
+    const location = document.getElementsByClassName('weather-location')
+    const rain = document.querySelector('.rain')
+    const background = document.querySelector('.background')
+
+    humidity[0].innerHTML = data.main.humidity + ' %';
+    wind[0].innerHTML = data.wind.speed + ' km/h';
+    temperature[0].innerHTML = data.main.temp + 'ºc';
+    location[0].innerHTML = data.name;
+
+    switch (data.weather[0].main) {
+      case 'thunderstorm':
+      case 'Rain':
+        setWeatherIcon(IconRain);
+        setRain(background, rain);
+        break;
+      case 'Drizzle':
+        setWeatherIcon(IconDrizzle);
+        setRain(background, rain);
+        break;
+      case 'Snow':
+        setWeatherIcon(IconSnow);
+        setClear(background, rain);
+        break;
+      case 'Clouds':
+        setWeatherIcon(IconCloud);
+        setClear(background, rain);
+        break;
+      case 'Clear':
+        setWeatherIcon(IconClear);
+        setClear(background, rain);
+        break;
+      case 'Mist':
+        setWeatherIcon(IconMist);
+        setClear(background, rain);
+        break;
+      default:
+        setWeatherIcon(IconWind);
+        setClear(background, rain);
+        break;
+    }
+  }
+
+  const getCurrentLocationWeather = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        let urlWeatherApi = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`
+        let responsePromise = fetch(urlWeatherApi);
+
+        responsePromise.then((response) => response.json() )
+        .then( (data) => updateWeather(data) )
+        .catch( () => { 
+        return 0;
+        })
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  }
+
   const search = () => {
     const searchCity = document.getElementsByClassName("cityInput")
     if (searchCity[0].value==="") {
       return 0;
     }
 
-      let urlWeatherApi = `https://api.openweathermap.org/data/2.5/weather?q=${searchCity[0].value}&appid=${apiKey}&units=metric`
-      let responsePromise = fetch(urlWeatherApi)
+    let urlWeatherApi = `https://api.openweathermap.org/data/2.5/weather?q=${searchCity[0].value}&appid=${apiKey}&units=metric`
+    let responsePromise = fetch(urlWeatherApi)
 
-      responsePromise.then((response) => response.json() )
-      .then( (data) => {
-
-      const humidity = document.getElementsByClassName('humidity-percentage')
-      const wind = document.getElementsByClassName('wind-rate')
-      const temperature = document.getElementsByClassName('weather-temp')
-      const location = document.getElementsByClassName('weather-location')
-      const rain = document.querySelector('.rain')
-      const background = document.querySelector('.background')
-
-      humidity[0].innerHTML = data.main.humidity + ' %';
-      wind[0].innerHTML = data.wind.speed + ' km/h';
-      temperature[0].innerHTML = data.main.temp + 'ºc';
-      location[0].innerHTML = data.name;
-
-      switch (data.weather[0].main) {
-        case 'thunderstorm':
-        case 'Rain':
-          setWeatherIcon(IconRain);
-          setRain(background, rain);
-          break;
-        case 'Drizzle':
-          setWeatherIcon(IconDrizzle);
-          setClear(background, rain);
-          break;
-        case 'Snow':
-          setWeatherIcon(IconSnow);
-          setClear(background, rain);
-          break;
-        case 'Clouds':
-          setWeatherIcon(IconCloud);
-          setClear(background, rain);
-          break;
-        case 'Clear':
-          setWeatherIcon(IconClear);
-          setClear(background, rain);
-          break;
-        case 'Mist':
-          setWeatherIcon(IconMist);
-          setClear(background, rain);
-          break;
-        default:
-          setWeatherIcon(IconWind);
-          setClear(background, rain);
-          break;
-      }
-
-   }).catch( () => { 
-      return 0;
+    responsePromise.then((response) => response.json() )
+    .then( (data) => updateWeather(data) )
+    .catch( () => { 
+    return 0;
     })
-    
   }
+
+  useEffect(() => {
+    getCurrentLocationWeather();
+  }, []);
 
   return (
     <>  
-      <div className='background'></div>
+      <div className='background clear'></div>
       <div className='container'>
         <div className='top-bar'>
           <input type='text' className='cityInput' placeholder='Search' onKeyDown={ 
